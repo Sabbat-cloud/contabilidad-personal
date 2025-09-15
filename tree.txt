@@ -1,14 +1,42 @@
-/contabilidad_flask
-├── venv/                   <-- Entorno virtual
-├── app/                    <-- / raiz app
-│   ├── __init__.py         <-- Inicializa la app y las extensiones
-│   ├── models.py           <-- Define las tablas de la base de datos
-│   ├── routes.py           <-- Define las URLs y qué hace cada una
-│   ├── forms.py            <-- Define los formularios (login, registro, etc.)
-│   ├── static/             <-- CSS, JavaScript, imágenes
-│   └── templates/          <-- Archivos HTML
+contabilidad_flask/
+├── .gitignore               <-- Archivos a ignorar
+├── INSTALL.md               <-- El manual de instalación y documentación
+├── LICENSE                  <-- La licencia MIT del proyecto
+├── app.db                   <-- Base de datos SQLite
+├── config.py                <-- Guarda las configuraciones (claves secretas, etc.)
+├── requirements.txt         <-- Lista de librerías de Python necesarias
+├── run.py                   <-- El archivo para ejecutar la aplicación
+│
+├── app/                     <-- El directorio principal de la aplicación Flask
+│   ├── __init__.py          <-- Inicializa la aplicación y las extensiones
+│   ├── forms.py             <-- Define todos los formularios de la app
+│   ├── models.py            <-- Define las tablas de la base de datos (User, Transaction, etc.)
+│   ├── routes.py            <-- Define todas las URLs y la lógica de las vistas
+│   │
+│   ├── static/              <-- Archivos estáticos
+│   │   └── css/
+│   │       └── style.css    <-- Hoja de estilos personalizada
+│   │
+│   └── templates/           <-- Archivos HTML (plantillas)
 │       ├── base.html
+│       ├── budgets.html
+│       ├── dashboard.html
+│       ├── edit_transaction.html
 │       ├── login.html
-│       └── dashboard.html
-├── config.py               <-- Guarda las configuraciones (claves secretas, etc.)
-└── run.py                  <-- Lanzador
+│       ├── manage_categories.html
+│       ├── profile.html
+│       ├── reports.html
+│       └── register.html
+│
+├── migrations/              <-- Carpeta para gestionar cambios en la BBDD (Flask-Migrate)
+│   └── versions/
+│       └── ... (archivos de migración)
+│
+├── scripts/                 <-- Directorio para tus scripts personalizados
+│   └── backup.sh            <-- El script de backup 
+│
+├── backups/                 <-- Directorio donde se guardan los backups (creado por el script)
+│   ├── app_code_...tar.gz
+│   └── database_...db
+│
+└── venv/                    <-- Entorno virtual (contenido omitido)
