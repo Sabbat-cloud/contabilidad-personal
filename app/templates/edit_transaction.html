@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Editar Transacción</h2>
+    <hr>
+    <div class="card my-4">
+        <div class="card-body">
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <div class="form-row">
+                    <div class="form-group col-md-5">
+                        {{ form.description.label }}
+                        {{ form.description(class="form-control") }}
+                    </div>
+                    <div class="form-group col-md-3">
+                        {{ form.amount.label }}
+                        {{ form.amount(class="form-control") }}
+                    </div>
+                    <div class="form-group col-md-4">
+                        {{ form.category.label }}
+                        {{ form.category(class="form-control") }}
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancelar</a>
+            </form>
+        </div>
+    </div>
+{% endblock %}

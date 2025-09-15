@@ -1,0 +1,14 @@
+/contabilidad_flask
+├── venv/                   <-- Entorno virtual
+├── app/                    <-- / raiz app
+│   ├── __init__.py         <-- Inicializa la app y las extensiones
+│   ├── models.py           <-- Define las tablas de la base de datos
+│   ├── routes.py           <-- Define las URLs y qué hace cada una
+│   ├── forms.py            <-- Define los formularios (login, registro, etc.)
+│   ├── static/             <-- CSS, JavaScript, imágenes
+│   └── templates/          <-- Archivos HTML
+│       ├── base.html
+│       ├── login.html
+│       └── dashboard.html
+├── config.py               <-- Guarda las configuraciones (claves secretas, etc.)
+└── run.py                  <-- Lanzador
