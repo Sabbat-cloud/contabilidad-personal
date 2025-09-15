@@ -82,25 +82,22 @@ Crea el archivo de servicio:
 sudo nano /etc/systemd/system/contabilidad.service
 ````
 
-Pega la siguiente configuración, **modificando el usuario y las rutas** para que coincidan con tu sistema:
-
 ```ini
 [Unit]
 Description=Gunicorn instance to serve Contabilidad Flask App
 After=network.target
 
 [Service]
-# Cambia 'sabbat' por tu nombre de usuario
-User=sabbat
+# Cambia 'usuario' por tu nombre de usuario
+User=usuario
 Group=www-data
 
 # Cambia la ruta a la de tu proyecto
-WorkingDirectory=/home/sabbat/contabilidad_flask
-Environment="PATH=/home/sabbat/contabilidad_flask/venv/bin"
+WorkingDirectory=/home/usuario/contabilidad_flask
+Environment="PATH=/home/usuario/contabilidad_flask/venv/bin"
 
 # Comando para iniciar Gunicorn.
-# Por defecto escucha en el puerto 3560. Puedes cambiarlo aquí.
-ExecStart=/home/sabbat/contabilidad_flask/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 run:app
+ExecStart=/home/usuario/contabilidad_flask/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 run:app
 
 Restart=always
 
@@ -143,7 +140,7 @@ server {
 
     # Sirve los archivos estáticos (CSS, etc.) directamente para mayor eficiencia
     location /static {
-        alias /home/sabbat/contabilidad_flask/app/static;
+        alias /home/usuario/contabilidad_flask/app/static;
     }
 }
 ```
