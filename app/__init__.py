@@ -8,8 +8,30 @@ import logging
 from logging.handlers import RotatingFileHandler
 import os
 
+# --- Clase para gestionar rutas  ---
+class PrefixMiddleware(object):
+    def __init__(self, app, prefix=''):
+        self.app = app
+        self.prefix = prefix
+
+    def __call__(self, environ, start_response):
+        # Esta lógica ajusta las rutas para que funcionen bajo /contabilidad
+        if environ['PATH_INFO'].startswith(self.prefix):
+            environ['PATH_INFO'] = environ['PATH_INFO'][len(self.prefix):]
+            environ['SCRIPT_NAME'] = self.prefix
+            return self.app(environ, start_response)
+        else:
+            # Si la URL no empieza con /contabilidad, devuelve un error 404.
+            # Esto es una medida de seguridad para que no se pueda acceder a la app desde /
+            start_response('404', [('Content-Type', 'text/plain')])
+            return ["Not Found".encode()]
+
 # Creación de la instancia de la aplicación Flask.
 app = Flask(__name__)
+
+# --- SOLUCIONADO! APLICA EL MIDDLEWARE JUSTO DESPUÉS DE CREAR LA APP ---
+app.wsgi_app = PrefixMiddleware(app.wsgi_app, prefix='/contabilidad')
+
 # Carga de la configuración desde el objeto Config.
 app.config.from_object(Config)
 app.debug = app.config['DEBUG']

@@ -18,7 +18,7 @@ from app.forms import (LoginForm, RegistrationForm, TransactionForm,
 def dashboard():
     form = TransactionForm()
     
-    # --- INICIALIZACIÓN DE VARIABLES (AQUÍ ESTÁ LA CORRECCIÓN) ---
+    # --- INICIALIZACIÓN DE VARIABLES---
     chart_labels = []
     chart_data = []
     # -------------------------------------------------------------
