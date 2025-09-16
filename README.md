@@ -115,18 +115,8 @@ WantedBy=multi-user.target
 #### \#\#\# \. Configura el Firewall \(`ufw`)
 
 
-El firewall es tu principal línea de defensa. Debemos decirle que solo permita el tráfico web a través de Nginx y bloquee todo lo demás.
-
-1. Asegúrate de que el puerto `3560` **no** esté permitido:
-    Bash
-
-    ```
-    sudo ufw deny 3560
-    
-    ```
-
 <br>
-2. Asegúrate de que Nginx **sí** esté permitido:
+1. Asegúrate de que Nginx **sí** esté permitido:
     Bash
 
     ```
@@ -135,7 +125,7 @@ El firewall es tu principal línea de defensa. Debemos decirle que solo permita 
     ```
 
 <br>
-3. Comprueba el estado del firewall:
+2. Comprueba el estado del firewall:
     Bash
 
     ```
@@ -153,15 +143,11 @@ sudo systemctl daemon-reload
 sudo systemctl restart contabilidad
 ```
 
-Ahora, el acceso directo a `http://tu_ip:3560` debería fallar, pero el acceso a través de `http://tu_ip` seguirá funcionando, servido de forma segura por Nginx.
-
 ***
 
 <br>
 ### \#\# 2\. Crear una Jaula de Fail2Ban para el Login 🛡️
 
-
-Esta es una medida de seguridad fantástica. El proceso consiste en tres pasos:
 
 1. **Flask**: Registrar los intentos de login fallidos en un archivo de log.
 2. **Fail2Ban (Filtro)**: Enseñarle a Fail2Ban a reconocer el mensaje de error en ese log.
@@ -182,7 +168,7 @@ sudo systemctl status contabilidad
 
 ### 3\. Configurar Nginx como Proxy Inverso
 
-Nginx recibirá las peticiones de los usuarios (puerto 80) y se las pasará a Gunicorn (puerto 3560).
+Nginx recibirá las peticiones de los usuarios (puerto 80) y se las pasará a Gunicorn (puerto 5000).
 
 Crea el archivo de configuración de Nginx:
 
