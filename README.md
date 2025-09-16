@@ -1,27 +1,38 @@
-### ## `INSTALL.md`
+# **Mi App de Contabilidad Personal**
 
-```markdown
-# Mi App de Contabilidad Personal
 
 Una aplicación web completa para la gestión de finanzas personales, construida con Python y Flask. Permite a los usuarios registrar ingresos y gastos, gestionar categorías, establecer presupuestos y analizar sus finanzas a través de informes y gráficos.
 
----
+## **Índice**
 
-## Características Principales
+
+1. [Características Principales](https://www.google.com/search?q=%23caracter%C3%ADsticas-principales)
+2. [Tecnologías Utilizadas](https://www.google.com/search?q=%23tecnolog%C3%ADas-utilizadas)
+3. [Instalación](https://www.google.com/search?q=%23instalaci%C3%B3n)
+    * [Desarrollo Local](https://www.google.com/search?q=%23desarrollo-local)
+    * [Producción (Debian/Ubuntu)](https://www.google.com/search?q=%23producci%C3%B3n-debianubuntu)
+4. [Seguridad](https://www.google.com/search?q=%23seguridad)
+    * [Firewall (ufw)](https://www.google.com/search?q=%23firewall-ufw)
+    * [Fail2Ban](https://www.google.com/search?q=%23fail2ban)
+5. [Backup](https://www.google.com/search?q=%23backup)
+6. [Licencia](https://www.google.com/search?q=%23licencia)
+
+
+## **Características Principales**
+
 
 * **Autenticación de Usuarios**: Sistema seguro de registro e inicio de sesión.
-* **Gestión de Transacciones**: Añadir, ver, **editar** y **eliminar** ingresos y gastos.
-* **Categorías Personalizadas**: Los usuarios pueden crear y gestionar sus propias categorías de ingresos y gastos.
-* **Sistema de Presupuestos**: Establecer límites de gasto mensuales por categoría y visualizar el progreso.
+* **Gestión de Transacciones**: Añadir, ver, editar y eliminar ingresos y gastos.
+* **Categorías Personalizadas**: Crea y gestiona tus propias categorías de ingresos y gastos.
+* **Sistema de Presupuestos**: Establece límites de gasto mensuales por categoría y visualiza el progreso.
 * **Dashboard Interactivo**: Balance total, gráfico de gastos del mes y tabla de últimos movimientos.
-* **Informes Detallados**: Filtrar transacciones por mes y año y ver resúmenes financieros.
-* **Exportación a CSV**: Descargar los informes filtrados en formato CSV.
-* **Seguridad**: Protección contra fuerza bruta con **Fail2Ban** y control de registro de usuarios.
-* **Backup Automatizado**: Incluye un script para realizar copias de seguridad de la aplicación y la base de datos.
+* **Informes Detallados**: Filtra transacciones por mes y año y ve resúmenes financieros.
+* **Diseño web responsivo.** Se adapta correctamente a cualquier tipo de pantalla de dispositivos móviles.
+* **Exportación a CSV**: Descarga los informes filtrados en formato CSV.
 
----
 
-## Tecnologías Utilizadas
+## **Tecnologías Utilizadas**
+
 
 * **Backend**: Python, Flask
 * **Base de Datos**: SQLAlchemy ORM con SQLite
@@ -30,275 +41,115 @@ Una aplicación web completa para la gestión de finanzas personales, construida
 * **Gestor de Procesos**: Systemd
 * **Seguridad**: Werkzeug, Flask-Login, Fail2Ban
 
----
 
-## Guía de Instalación (Desarrollo Local)
+## **Instalación**
 
-Sigue estos pasos para poner en marcha la aplicación en tu propio ordenador.
+
+<br>
+### **Desarrollo Local**
+
 
 **Requisitos**: Python 3.10+ y `venv`.
 
-1.  **Clonar el Repositorio**
-    ```bash
-    git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
-    cd tu-repositorio
-    ```
+1. **Clonar el Repositorio**
+    Bash
 
-2.  **Crear y Activar el Entorno Virtual**
-    ```bash
+    ```
+    git clone https://github.com/tu-usuario/tu-repositorio.git
+    cd tu-repositorio
+
+    ```
+2. **Crear y Activar el Entorno Virtual**
+    Bash
+
+    ```
     python3 -m venv venv
     source venv/bin/activate
-    ```
 
-3.  **Instalar las Dependencias**
-    ```bash
+    ```
+3. **Instalar las Dependencias**
+    Bash
+
+    ```
     pip install -r requirements.txt
-    ```
 
-4.  **Crear la Base de Datos**
-    ```bash
+    ```
+4. **Crear la Base de Datos**
+    Bash
+
+    ```
     export FLASK_APP=run.py
     flask db upgrade
+
     ```
-
-5. Creamos las rutas para guardar los logs
-
-# Creamos el directoriosudo mkdir -p /var/log/contabilidad
-# Creamos el archivo de log vacío
-sudo touch /var/log/contabilidad/auth.log
-# Hacemos que tu usuario (usuario) y el grupo www-data (nginx/gunicorn) sean los propietarios
-sudo chown usuario:www-data /var/log/contabilidad/auth.log
-# Damos permisos de escritura al propietario y al grupo
-sudo chmod 664 /var/log/contabilidad/auth.log
-
----
-
-## Instalación en Producción (Debian/Ubuntu)
-
-Esta guía explica cómo desplegar la aplicación en un servidor usando Gunicorn como servidor de aplicación y Nginx como proxy inverso.
-
-### 1. Crear el Servicio `systemd`
-
-`systemd` se encargará de que tu aplicación se ejecute en segundo plano y se reinicie automáticamente si falla o si el servidor se reinicia.
-
-Crea el archivo de servicio:
-```bash
-sudo nano /etc/systemd/system/contabilidad.service
-```
-
-```ini
-[Unit]
-Description=Gunicorn instance to serve Contabilidad Flask App
-After=network.target
-
-[Service]
-# Cambia 'usuario' por tu nombre de usuario
-User=usuario
-Group=www-data
-
-# Cambia la ruta a la de tu proyecto
-WorkingDirectory=/home/usuario/contabilidad_flask
-Environment="PATH=/home/usuario/contabilidad_flask/venv/bin"
-
-# Comando para iniciar Gunicorn.
-ExecStart=/home/usuario/contabilidad_flask/venv/bin/gunicorn --workers 3 --bind 127.0.0.1:5000 run:app
-
-Restart=always
-
-[Install]
-WantedBy=multi-user.target
-```
-
-
-#### 
-
-#### \#\#\# \. Configura el Firewall \(`ufw`)
-
-
-<br>
-1. Asegúrate de que Nginx **sí** esté permitido:
+5. **Crear Directorio de Logs**
     Bash
 
     ```
-    sudo ufw allow 'Nginx Full'
-    
+    sudo mkdir -p /var/log/contabilidad
+    sudo touch /var/log/contabilidad/auth.log
+    sudo chown $USER:www-data /var/log/contabilidad/auth.log
+    sudo chmod 664 /var/log/contabilidad/auth.log
+
     ```
 
-<br>
-2. Comprueba el estado del firewall:
+
+### **Producción (Debian/Ubuntu)**
+
+
+1. **Servicio `systemd`**: Crea `/etc/systemd/system/contabilidad.service` para gestionar la aplicación.
+2. **Nginx como Proxy Inverso**: Crea `/etc/nginx/sites-available/contabilidad` para dirigir el tráfico a Gunicorn.
+3. **Activar Servicios**:
     Bash
 
     ```
-    sudo ufw status
-    
+    sudo systemctl daemon-reload
+    sudo systemctl start contabilidad
+    sudo systemctl enable contabilidad
+    sudo systemctl restart nginx
+
     ```
 
-    La salida debería mostrar que solo los puertos de Nginx (80, 443) y SSH (22) están permitidos desde cualquier lugar (`Anywhere`).
 
-Después de hacer estos cambios, reinicia los servicios para aplicarlos:
+## **Seguridad**
+
+
+<br>
+### **Firewall (ufw)**
+
+
+Asegúrate de que Nginx esté permitido:
 Bash
 
 ```
-sudo systemctl daemon-reload
-sudo systemctl restart contabilidad
+sudo ufw allow 'Nginx Full'
+sudo ufw status
 ```
 
-***
 
-<br>
-### \#\# 2\. Crear una Jaula de Fail2Ban para el Login 🛡️
+### **Fail2Ban**
 
 
-1. **Flask**: Registrar los intentos de login fallidos en un archivo de log.
-2. **Fail2Ban (Filtro)**: Enseñarle a Fail2Ban a reconocer el mensaje de error en ese log.
-3. **Fail2Ban (Jaula)**: Decirle a Fail2Ban que vigile ese log con ese filtro y que bloquee las IPs que fallen repetidamente.
+Para proteger la aplicación contra ataques de fuerza bruta en el login:
 
-
-#### 
-
-### 2\. Activar el Servicio
-
-```bash
-sudo systemctl daemon-reload
-sudo systemctl start contabilidad
-sudo systemctl enable contabilidad
-# Comprueba que funciona correctamente con:
-sudo systemctl status contabilidad
-```
-
-### 3\. Configurar Nginx como Proxy Inverso
-
-Nginx recibirá las peticiones de los usuarios (puerto 80) y se las pasará a Gunicorn (puerto 5000).
-
-Crea el archivo de configuración de Nginx:
-
-```bash
-sudo nano /etc/nginx/sites-available/contabilidad
-```
-
-Pega la siguiente configuración, **modificando la IP/dominio y las rutas**:
-
-```nginx
-server {
-    listen 80;
-    server_name tu_ip_o_dominio.com;
-
-    location / {
-        include proxy_params;
-        # Esta dirección debe coincidir con el puerto del --bind de Gunicorn
-        proxy_pass [http://127.0.0.1:3560](http://127.0.0.1:5000);
-    }
-
-    # Sirve los archivos estáticos (CSS, etc.) directamente para mayor eficiencia
-    location /static {
-        alias /home/usuario/contabilidad_flask/app/static;
-    }
-}
-```
-
-### 4\. Activar la Configuración de Nginx
-
-```bash
-sudo ln -s /etc/nginx/sites-available/contabilidad /etc/nginx/sites-enabled
-sudo nginx -t  # Comprueba que la sintaxis es correcta
-sudo systemctl restart nginx
-```
-
-***
-
-<br>
-### 5\. Jaula Fail2Ban
-
-
-#### \#\#\# Paso 5\.1: Crear el Filtro de Fail2Ban
-
-
-Ahora, enséñale a Fail2Ban qué buscar.
-
-1. Crea un nuevo archivo de filtro:
-    Bash
-
-    ```
-    sudo nano /etc/fail2ban/filter.d/flask-auth.conf
-    
-    ```
-
-<br>
-2. Pega esta definición. El `failregex` debe coincidir exactamente con el mensaje que configuramos en el log.
-    Ini, TOML
-
-    ```
-    [Definition]
-    failregex = ^.*WARNING.*Failed login attempt for user '.*' from IP <HOST>$
-    ignoreregex =
-    
-    ```
-
-<br>
-
-
-#### \#\#\# Paso 5\.2: Crear y Activar la Jaula
-
-
-Finalmente, une todas las piezas. **Nunca edites `jail.conf`**. Crea un archivo local para tus personalizaciones.
-
-1. Crea o edita `jail.local`:
-    Bash
-
-    ```
-    sudo nano /etc/fail2ban/jail.local
-    
-    ```
-
-<br>
-2. Añade tu nueva jaula al final del archivo:
-    Ini, TOML
-
-    ```
-    [flask-auth]
-    enabled  = true
-    filter   = flask-auth
-    logpath  = /var/log/contabilidad/auth.log
-    port     = http,https
-    maxretry = 5
-    findtime = 600
-    bantime  = 3600
-    
-    ```
-    * **maxretry = 5**: Bloquea después de 5 intentos fallidos.
-    * **findtime = 600**: Si los 5 intentos ocurren en un plazo de 600 segundos (10 minutos).
-    * **bantime = 3600**: Bloquea la IP durante 3600 segundos (1 hora).
-
-
-#### \#\#\# Paso 5\.3: Aplicar y Probar
-
-
-1. Reinicia Fail2Ban para que cargue la nueva configuración:
+1. **Crear Filtro**: Crea `/etc/fail2ban/filter.d/flask-auth.conf` con la `failregex`.
+2. **Crear Jaula**: Añade la jaula `[flask-auth]` a tu archivo `/etc/fail2ban/jail.local`.
+3. **Reiniciar y Verificar**:
     Bash
 
     ```
     sudo systemctl restart fail2ban
-    
-    ```
-
-<br>
-2. Comprueba el estado de tu nueva jaula:
-    Bash
-
-    ```
     sudo fail2ban-client status flask-auth
-    
+
     ```
 
-    Debería decir que ha encontrado 1 archivo y que el número de IPs baneadas es 0.
+
+## **Backup**
 
 
-### 7\. Script de Backup
+El proyecto incluye un script de backup en `scripts/backup.sh`. Adáptalo a tu usuario y configúralo con `cron` para automatizar las copias de seguridad de la base de datos y el código.
 
+## **Licencia**
 
-Dentro de /backups tienes un script que realiza una copia de la aplicación y la base de datos. Recuerda adaptarlo a tu usuario.
-
-## Licencia
 
 Este proyecto está bajo la Licencia MIT. Consulta el archivo `LICENSE` para más detalles.
-
