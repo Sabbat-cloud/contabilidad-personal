@@ -75,9 +75,13 @@
                     {{ "%.2f"|format(t.amount) }}
                 </td>
                 <td>
-                    <a href="{{ url_for('edit_transaction', transaction_id=t.id) }}" class="btn btn-warning btn-sm">Editar</a>
-                    <form action="{{ url_for('delete_transaction', transaction_id=t.id) }}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro?');">
-                        <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
+                    <a href="{{ url_for('edit_transaction', transaction_id=t.id) }}" class="btn btn-warning btn-sm" title="Editar">
+    <i class="fas fa-pencil-alt"></i>
+</a>
+		     <form action="{{ url_for('delete_transaction', transaction_id=t.id) }}" method="post" style="display:inline;" onsubmit="return confirm('¿Estás seguro?');">
+			<button type="submit" class="btn btn-danger btn-sm" title="Eliminar">
+    <i class="fas fa-trash-alt"></i>
+</button>     
                     </form>
                 </td>
             </tr>

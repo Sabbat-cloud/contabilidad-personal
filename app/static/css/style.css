@@ -1,0 +1,239 @@
+/* app/static/css/style.css */
+
+/* --- 1. Paleta de Colores y Tipografía --- */
+
+:root {
+    --primary-color: #4A90E2; /* Un azul moderno */
+    --secondary-color: #50E3C2; /* Un verde menta para acentos */
+    --success-color: #7ED321; /* Verde brillante para ingresos */
+    --danger-color: #E94E77;  /* Un rojo/rosa vibrante para gastos */
+    --light-bg: #F7F9FC;     /* Un fondo gris muy claro para la página */
+    --dark-blue: #2C3E50;     /* Azul oscuro para la barra de navegación */
+    --text-color: #333;
+    --card-bg: #FFFFFF;
+}
+
+body {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+    font-family: 'Lato', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+}
+
+
+/* --- 2. Barra de Navegación (Navbar) --- */
+
+.navbar-dark.bg-dark {
+    background-color: var(--dark-blue) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+
+/* --- 3. Tarjetas (Cards) --- */
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: none;
+    margin-bottom: 1.5rem; /* Añade más espacio entre tarjetas */
+}
+
+
+/* --- 4. Botones --- */
+
+.btn {
+    border-radius: 8px; /* Bordes más redondeados */
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}
+
+.btn-success {
+    background-color: var(--success-color);
+    border-color: var(--success-color);
+}
+
+.btn-danger {
+    background-color: var(--danger-color);
+    border-color: var(--danger-color);
+}
+
+
+/* --- 5. Tablas --- */
+
+.table thead.thead-dark th {
+    background-color: var(--dark-blue);
+    border-color: var(--dark-blue);
+}
+
+.table-hover tbody tr:hover {
+    background-color: #e9ecef;
+}
+
+
+/* --- 6. Formularios --- */
+
+.form-control {
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(74, 144, 226, 0.25);
+}
+
+
+/* --- 7. Indicadores de Balance --- */
+.text-success {
+    color: var(--success-color) !important;
+}
+
+.text-danger {
+    color: var(--danger-color) !important;
+}
+
+/* --- 8. Barra de Progreso (Presupuestos) --- */
+.progress {
+    height: 20px;
+    border-radius: 10px;
+}
+
+.progress-bar {
+    font-weight: bold;
+}
+
+/* --- 9. TEMA OSCURO --- */
+
+/* Estilos generales para el tema oscuro */
+[data-theme="dark"] {
+    --primary-color: #58a6ff; /* Un azul más brillante para el modo oscuro */
+    --light-bg: #0d1117;
+    --card-bg: #161b22;
+    --text-color: #c9d1d9;
+    --dark-blue: #161b22; /* El fondo del navbar y la cabecera de la tabla */
+    --border-color: #30363d; /* Un color para los bordes */
+}
+
+[data-theme="dark"] body {
+    background-color: var(--light-bg);
+    color: var(--text-color);
+}
+
+/* Tarjetas y formularios en modo oscuro */
+[data-theme="dark"] .card,
+[data-theme="dark"] .form-control {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .form-control:focus {
+    background-color: var(--card-bg);
+    color: var(--text-color);
+}
+
+/* Tablas en modo oscuro */
+[data-theme="dark"] .table {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .table-hover tbody tr:hover {
+    background-color: #21262d;
+}
+
+[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(33, 38, 45, 0.5);
+}
+
+/* Botones en modo oscuro */
+[data-theme="dark"] .btn-secondary {
+    background-color: #30363d;
+    border-color: #4d555e;
+    color: var(--text-color);
+}
+
+/* Dropdown del menú de usuario */
+[data-theme="dark"] .dropdown-menu {
+    background-color: var(--card-bg);
+    border-color: var(--border-color);
+}
+
+[data-theme="dark"] .dropdown-item {
+    color: var(--text-color);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: #21262d;
+}
+
+/* --- ESTILOS PARA EL INTERRUPTOR DE TEMA --- */
+.theme-switch-wrapper {
+  display: flex;
+  align-items: center;
+}
+.theme-switch {
+  display: inline-block;
+  height: 24px;
+  position: relative;
+  width: 48px;
+  margin-left: 10px;
+}
+.theme-switch input {
+  display:none;
+}
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: .4s;
+  border-radius: 24px;
+}
+.slider:before {
+  background-color: #fff;
+  bottom: 4px;
+  content: "";
+  height: 16px;
+  left: 4px;
+  position: absolute;
+  transition: .4s;
+  width: 16px;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #58a6ff;
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+/* Estilos para pantallas de menos de 768px de ancho (móviles) */
+@media (max-width: 768px) {
+    h2 {
+        font-size: 1.5rem; /* Hacer los títulos un poco más pequeños */
+    }
+
+    .btn {
+        width: 100%; /* Hacer que los botones ocupen todo el ancho */
+        margin-bottom: 10px;
+    }
+
+    .table {
+        font-size: 0.9rem; /* Reducir el tamaño del texto en las tablas */
+    }
+}
