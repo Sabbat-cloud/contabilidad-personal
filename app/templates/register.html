@@ -4,27 +4,27 @@
     <h1>Registrarse</h1>
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
+        <div class="mb-3">
+            {{ form.username.label(class="form-label") }}<br>
             {{ form.username(size=32, class="form-control") }}
             {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span class="text-danger">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
+        </div>
+        <div class="mb-3">
+            {{ form.password.label(class="form-label") }}<br>
             {{ form.password(size=32, class="form-control") }}
             {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span class="text-danger">[{{ error }}]</span>
             {% endfor %}
-        </p>
-        <p>
-            {{ form.password2.label }}<br>
+        </div>
+        <div class="mb-3">
+            {{ form.password2.label(class="form-label") }}<br>
             {{ form.password2(size=32, class="form-control") }}
             {% for error in form.password2.errors %}
-            <span style="color: red;">[{{ error }}]</span>
+            <span class="text-danger">[{{ error }}]</span>
             {% endfor %}
-        </p>
+        </div>
         <p>{{ form.submit(class="btn btn-primary") }}</p>
     </form>
     <p>¿Ya tienes una cuenta? <a href="{{ url_for('login') }}">¡Inicia sesión!</a></p>

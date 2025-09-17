@@ -6,30 +6,32 @@
     <hr>
 
     <form action="" method="post">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Categoría de Gasto</th>
-                    <th>Presupuesto (€)</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for category in categories %}
-                <tr>
-                    <td>{{ category.name }}</td>
-                    <td>
-                        <input type="number" step="0.01" name="budget-{{ category.id }}" 
-                               class="form-control" value="{{ budgets[category.id] if category.id in budgets else '' }}"
-                               placeholder="Ej: 300.00">
-                    </td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="2">No tienes categorías de gastos. <a href="{{ url_for('manage_categories') }}">Crea una primero</a>.</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <button type="submit" class="btn btn-primary">Guardar Presupuestos</button>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Categoría de Gasto</th>
+                        <th>Presupuesto (€)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category in categories %}
+                    <tr>
+                        <td>{{ category.name }}</td>
+                        <td>
+                            <input type="number" step="0.01" name="budget-{{ category.id }}" 
+                                   class="form-control" value="{{ budgets[category.id] if category.id in budgets else '' }}"
+                                   placeholder="Ej: 300.00">
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="2">No tienes categorías de gastos. <a href="{{ url_for('manage_categories') }}">Crea una primero</a>.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Guardar Presupuestos</button>
     </form>
 {% endblock %}
