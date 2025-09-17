@@ -1,42 +1,36 @@
 contabilidad_flask/
-├── .gitignore               <-- Archivos a ignorar
-├── INSTALL.md               <-- El manual de instalación y documentación
-├── LICENSE                  <-- La licencia MIT del proyecto
-├── app.db                   <-- Base de datos SQLite
-├── config.py                <-- Guarda las configuraciones (claves secretas, etc.)
-├── requirements.txt         <-- Lista de librerías de Python necesarias
-├── run.py                   <-- El archivo para ejecutar la aplicación
-│
-├── app/                     <-- El directorio principal de la aplicación Flask
-│   ├── __init__.py          <-- Inicializa la aplicación y las extensiones
-│   ├── forms.py             <-- Define todos los formularios de la app
-│   ├── models.py            <-- Define las tablas de la base de datos (User, Transaction, etc.)
-│   ├── routes.py            <-- Define todas las URLs y la lógica de las vistas
-│   │
-│   ├── static/              <-- Archivos estáticos
-│   │   └── css/
-│   │       └── style.css    <-- Hoja de estilos personalizada
-│   │
-│   └── templates/           <-- Archivos HTML (plantillas)
-│       ├── base.html
-│       ├── budgets.html
-│       ├── dashboard.html
-│       ├── edit_transaction.html
-│       ├── login.html
-│       ├── manage_categories.html
-│       ├── profile.html
-│       ├── reports.html
-│       └── register.html
-│
-├── migrations/              <-- Carpeta para gestionar cambios en la BBDD (Flask-Migrate)
-│   └── versions/
-│       └── ... (archivos de migración)
-│
-├── scripts/                 <-- Directorio para tus scripts personalizados
-│   └── backup.sh            <-- El script de backup 
-│
-├── backups/                 <-- Directorio donde se guardan los backups (creado por el script)
-│   ├── app_code_...tar.gz
-│   └── database_...db
-│
-└── venv/                    <-- Entorno virtual (contenido omitido)
+├── .gitignore               		<-- Archivos a ignorar
+├── INSTALL.md               		<-- El manual de instalación y documentación
+├── LICENSE                  		<-- La licencia MIT del proyecto
+├── app.db                   		<-- Base de datos SQLite
+├── config.py                		<-- Guarda las configuraciones (claves secretas, etc.)
+├── lanza.sh				 		<-- Lanzador de la app manual
+├── requirements.txt         		<-- Lista de librerías de Python necesarias
+├── run.py                   		<-- El archivo para ejecutar la aplicación
+├── tree.txt				 		<-- Arbol de directorios
+├── app						 		<-- El directorio principal de la aplicación
+│   ├── __init__.py			 		<-- Inicializa la aplicación y las extensiones
+│   ├── forms.py			 		<-- Define todos los formularios de la app
+│   ├── models.py			 		<-- Define las tablas de la base de datos (User, Transaction, etc.)
+│   ├── routes.py			 		<-- Define todas las URLs y la lógica de las vistas
+│   ├── static				 		<-- Archivos estáticos
+│   │   ├── css
+│   │   │   └── style.css	 		<-- Hoja de estilos personalizada
+│   │   ├── images			 		<-- Imagenes para Progressive Web App
+│   │   │   ├── icon-192x192.png
+│   │   │   └── icon-512x512.png
+│   │   └── manifest.json	 		<-- Configuración para Progressive Web App
+│   └── templates			 		<-- Archivos HTML (plantillas)
+│       ├── base.html
+│       ├── budgets.html
+│       ├── dashboard.html
+│       ├── edit_transaction.html
+│       ├── login.html
+│       ├── manage_categories.html
+│       ├── profile.html
+│       ├── register.html
+│       └── reports.html
+├── backups
+│   └── backup_contabilidad.sh	 	<-- El script de backup
+├── migrations					 	<-- Carpeta para gestionar cambios en la BBDD (Flask-Migrate)
+│   └── versions
