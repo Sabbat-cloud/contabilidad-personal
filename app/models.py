@@ -46,6 +46,23 @@ class Transaction(db.Model):
 
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
+class RecurringTransaction(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(140))
+    amount = db.Column(db.Numeric(10, 2), nullable=False)
+    
+    # Frecuencia: 'monthly', 'weekly', 'yearly'
+    frequency = db.Column(db.String(10), nullable=False, default='monthly')
+    start_date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    next_date = db.Column(db.DateTime, nullable=False, index=True)
+
+    category_id = db.Column(db.Integer, db.ForeignKey('category.id'))
+    category = db.relationship('Category')
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return f'<RecurringTransaction {self.description}>'
+
 class Budget(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     amount = db.Column(db.Numeric(10, 2), nullable=False)

@@ -11,7 +11,7 @@ contabilidad_flask/
 ├── app						 		<-- El directorio principal de la aplicación
 │   ├── __init__.py			 		<-- Inicializa la aplicación y las extensiones
 │   ├── forms.py			 		<-- Define todos los formularios de la app
-│   ├── models.py			 		<-- Define las tablas de la base de datos (User, Transaction, etc.)
+│   ├── models.py			 		<-- Define las tablas de la base de datos
 │   ├── routes.py			 		<-- Define todas las URLs y la lógica de las vistas
 │   ├── static				 		<-- Archivos estáticos
 │   │   ├── css
@@ -25,12 +25,14 @@ contabilidad_flask/
 │       ├── budgets.html
 │       ├── dashboard.html
 │       ├── edit_transaction.html
+│       ├── edit_recurring_transaction.html 
 │       ├── login.html
 │       ├── manage_categories.html
 │       ├── profile.html
+│       ├── recurring_transactions.html
 │       ├── register.html
 │       └── reports.html
 ├── backups
 │   └── backup_contabilidad.sh	 	<-- El script de backup
-├── migrations					 	<-- Carpeta para gestionar cambios en la BBDD (Flask-Migrate)
+├── migrations					 	<-- Carpeta para gestionar cambios en la BBDD
 │   └── versions

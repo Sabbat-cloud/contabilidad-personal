@@ -1,14 +1,14 @@
 # app/routes.py
 from flask import render_template, flash, redirect, url_for, request, Response
 from flask_login import current_user, login_user, logout_user, login_required
-from sqlalchemy import func, extract
-from datetime import datetime
+from sqlalchemy import func, extract, case
+from datetime import datetime, timedelta
 from app import app, db
 import csv
 from io import StringIO
-from app.models import User, Transaction, Category, Budget
+from app.models import User, Transaction, Category, Budget, RecurringTransaction
 from app.forms import (LoginForm, RegistrationForm, TransactionForm, 
-                       CategoryForm, ReportForm, ChangePasswordForm)
+                       CategoryForm, ReportForm, ChangePasswordForm, RecurringTransactionForm)
 
 # app/routes.py
 
@@ -231,35 +231,53 @@ def delete_transaction(transaction_id):
 def reports():
     form = ReportForm()
 
-    # Obtenemos el mes y año de los argumentos de la URL (o usamos los actuales por defecto)
     selected_year = request.args.get('year', datetime.utcnow().year, type=int)
     selected_month = request.args.get('month', datetime.utcnow().month, type=int)
 
-    # Pre-seleccionamos los valores en el formulario para que el usuario vea qué está filtrando
     form.year.data = selected_year
     form.month.data = selected_month
 
-    # Empezamos la consulta base
+    # --- Lógica para la tabla de transacciones (sin cambios) ---
     query = Transaction.query.filter_by(user_id=current_user.id)
-
-    # Aplicamos los filtros si no se ha seleccionado "Todos" (valor 0)
     if selected_year != 0:
         query = query.filter(extract('year', Transaction.date) == selected_year)
     if selected_month != 0:
         query = query.filter(extract('month', Transaction.date) == selected_month)
-
-    # Ejecutamos la consulta
     transactions = query.order_by(Transaction.date.desc()).all()
 
-    # Calculamos los totales a partir de los resultados filtrados
     total_income = sum(t.amount for t in transactions if t.amount > 0)
     total_expenses = sum(t.amount for t in transactions if t.amount < 0)
     net_savings = total_income + total_expenses
 
+    # --- NUEVA LÓGICA PARA EL GRÁFICO DE EVOLUCIÓN ---
+    today = datetime.utcnow()
+    six_months_ago = today - timedelta(days=180)
+
+    # Consulta para obtener ingresos y gastos agrupados por año y mes
+    monthly_data = db.session.query(
+        extract('year', Transaction.date).label('year'),
+        extract('month', Transaction.date).label('month'),
+        func.sum(case((Transaction.amount > 0, Transaction.amount), else_=0)).label('total_income'),
+        func.sum(case((Transaction.amount < 0, Transaction.amount), else_=0)).label('total_expenses')
+    ).filter(
+        Transaction.user_id == current_user.id,
+        Transaction.date >= six_months_ago
+    ).group_by('year', 'month').order_by('year', 'month').all()
+
+    # Procesar datos para el gráfico
+    chart_evolution_labels = [f"{d.year}-{str(d.month).zfill(2)}" for d in monthly_data]
+    chart_evolution_income = [float(d.total_income) for d in monthly_data]
+    chart_evolution_expenses = [abs(float(d.total_expenses)) for d in monthly_data]
+    # --- FIN DE LA NUEVA LÓGICA ---
+
     return render_template('reports.html', title='Informes', form=form,
                            transactions=transactions, total_income=total_income,
                            total_expenses=total_expenses, net_savings=net_savings,
-                           selected_year=selected_year, selected_month=selected_month)
+                           selected_year=selected_year, selected_month=selected_month,
+                           # Pasamos los nuevos datos a la plantilla
+                           chart_evolution_labels=chart_evolution_labels,
+                           chart_evolution_income=chart_evolution_income,
+                           chart_evolution_expenses=chart_evolution_expenses)
 
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -356,3 +374,86 @@ def manage_budgets():
     return render_template('budgets.html', title='Gestionar Presupuestos', 
                            categories=expense_categories, budgets=budgets_dict,
                            year=year, month=month)
+
+@app.route('/recurring_transactions', methods=['GET', 'POST'])
+@login_required
+def manage_recurring_transactions():
+    form = RecurringTransactionForm()
+    form.category.choices = [(c.id, c.name) for c in Category.query.filter_by(user_id=current_user.id).order_by('name').all()]
+
+    if form.validate_on_submit():
+        # Lógica para añadir una nueva transacción recurrente
+        selected_category = Category.query.get(form.category.data)
+        amount = form.amount.data
+        if selected_category and selected_category.type == 'gasto':
+            amount = -abs(amount)
+        else:
+            amount = abs(amount)
+
+        # La primera vez, next_date es igual a start_date
+        rt = RecurringTransaction(
+            description=form.description.data,
+            amount=amount,
+            frequency=form.frequency.data,
+            start_date=form.start_date.data,
+            next_date=form.start_date.data, # Se establece la primera fecha de ejecución
+            category_id=selected_category.id,
+            user_id=current_user.id
+        )
+        db.session.add(rt)
+        db.session.commit()
+        flash('¡Transacción recurrente añadida con éxito!', 'success')
+        return redirect(url_for('manage_recurring_transactions'))
+
+    recurring_transactions = RecurringTransaction.query.filter_by(user_id=current_user.id).order_by(RecurringTransaction.next_date.asc()).all()
+    
+    return render_template('recurring_transactions.html', 
+                           title='Transacciones Recurrentes', 
+                           form=form, 
+                           transactions=recurring_transactions)
+
+@app.route('/edit_recurring/<int:rt_id>', methods=['GET', 'POST'])
+@login_required
+def edit_recurring_transaction(rt_id):
+    rt = RecurringTransaction.query.get_or_404(rt_id)
+    if rt.user_id != current_user.id:
+        return redirect(url_for('manage_recurring_transactions')) # O mostrar un error 403
+
+    form = RecurringTransactionForm(obj=rt)
+    form.category.choices = [(c.id, c.name) for c in Category.query.filter_by(user_id=current_user.id).order_by('name').all()]
+
+    if form.validate_on_submit():
+        selected_category = Category.query.get(form.category.data)
+        amount = form.amount.data
+        if selected_category.type == 'gasto':
+            amount = -abs(amount)
+        else:
+            amount = abs(amount)
+            
+        rt.description = form.description.data
+        rt.amount = amount
+        rt.category_id = form.category.data
+        rt.frequency = form.frequency.data
+        rt.start_date = form.start_date.data
+        # Opcional: recalcular next_date si la fecha de inicio cambia
+        # rt.next_date = form.start_date.data 
+        
+        db.session.commit()
+        flash('¡Transacción recurrente actualizada!', 'success')
+        return redirect(url_for('manage_recurring_transactions'))
+    
+    # Para el método GET, mostrar el valor del amount siempre en positivo
+    form.amount.data = abs(rt.amount)
+    return render_template('edit_recurring_transaction.html', title='Editar Transacción Recurrente', form=form)
+
+@app.route('/delete_recurring/<int:rt_id>', methods=['POST'])
+@login_required
+def delete_recurring_transaction(rt_id):
+    rt = RecurringTransaction.query.get_or_404(rt_id)
+    if rt.user_id != current_user.id:
+        return redirect(url_for('manage_recurring_transactions'))
+
+    db.session.delete(rt)
+    db.session.commit()
+    flash('Transacción recurrente eliminada.', 'success')
+    return redirect(url_for('manage_recurring_transactions'))

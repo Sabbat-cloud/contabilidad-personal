@@ -54,6 +54,15 @@
         </div>
     </div>
 
+    <div class="card my-4">
+        <div class="card-header">
+            Evolución de Ingresos y Gastos (Últimos 6 Meses)
+        </div>
+        <div class="card-body">
+            <canvas id="evolutionChart"></canvas>
+        </div>
+    </div>
+
     <h4>Detalle de Movimientos</h4>
     <div class="table-responsive">
         <table class="table table-striped">
@@ -94,4 +103,47 @@
             </tbody>
         </table>
     </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+    const labels = {{ chart_evolution_labels|tojson }};
+    const incomeData = {{ chart_evolution_income|tojson }};
+    const expenseData = {{ chart_evolution_expenses|tojson }};
+
+    if (labels && labels.length > 0) {
+        const ctx = document.getElementById('evolutionChart').getContext('2d');
+        const evolutionChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Ingresos (€)',
+                        data: incomeData,
+                        backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Gastos (€)',
+                        data: expenseData,
+                        backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    }
+</script>
 {% endblock %}

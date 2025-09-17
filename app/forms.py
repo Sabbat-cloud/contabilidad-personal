@@ -2,6 +2,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, DecimalField, SelectField
 from wtforms.validators import DataRequired, EqualTo, ValidationError
+from wtforms.fields import DateField
 from app.models import User
 from datetime import datetime
 class LoginForm(FlaskForm):
@@ -66,3 +67,15 @@ class ChangePasswordForm(FlaskForm):
     new_password2 = PasswordField(
         'Repetir Nueva Contraseña', validators=[DataRequired(), EqualTo('new_password')])
     submit = SubmitField('Cambiar Contraseña')
+
+class RecurringTransactionForm(FlaskForm):
+    description = StringField('Descripción', validators=[DataRequired()])
+    amount = DecimalField('Cantidad', validators=[DataRequired()])
+    category = SelectField('Categoría', coerce=int, validators=[DataRequired()])
+    frequency = SelectField('Frecuencia', choices=[
+        ('monthly', 'Mensual'),
+        ('weekly', 'Semanal'),
+        ('yearly', 'Anual')
+    ], validators=[DataRequired()])
+    start_date = DateField('Fecha de Inicio', format='%Y-%m-%d', validators=[DataRequired()])
+    submit = SubmitField('Guardar Transacción Recurrente')
