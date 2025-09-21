@@ -45,7 +45,7 @@ Una aplicación web completa para la gestión de finanzas personales, construida
 
 1.  **Clonar el Repositorio**
     ```bash
-    git clone [https://github.com/Sabbat-cloud/contabilidad-personal.git](https://github.com/Sabbat-cloud/contabilidad-personal.git)
+    git clone https://github.com/Sabbat-cloud/contabilidad-personal
     cd contabilidad-personal
     ```
 2.  **Crear y Activar el Entorno Virtual**
