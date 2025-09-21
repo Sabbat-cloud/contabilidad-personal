@@ -45,8 +45,8 @@ Una aplicación web completa para la gestión de finanzas personales, construida
 
 1.  **Clonar el Repositorio**
     ```bash
-    git clone [https://github.com/tu-usuario/tu-repositorio.git](https://github.com/tu-usuario/tu-repositorio.git)
-    cd tu-repositorio
+    git clone [https://github.com/Sabbat-cloud/contabilidad-personal.git](https://github.com/Sabbat-cloud/contabilidad-personal.git)
+    cd contabilidad-personal
     ```
 2.  **Crear y Activar el Entorno Virtual**
     ```bash
@@ -80,7 +80,7 @@ Para que las transacciones recurrentes se procesen automáticamente, necesitas c
     ```
 2.  Añade la siguiente línea, adaptando las rutas a tu configuración:
     ```bash
-    0 3 * * * /home/usuario/contabilidad_flask/ejecutar-recurrentes.sh
+    0 3 * * * /home/usuario/contabilidad-personal/ejecutar-recurrentes.sh
     ```
     *Este comando se ejecutará todos los días a las 3:00 AM.*
 
