@@ -80,7 +80,7 @@ Para que las transacciones recurrentes se procesen automáticamente, necesitas c
     ```
 2.  Añade la siguiente línea, adaptando las rutas a tu configuración:
     ```bash
-    0 3 * * * cd /home/usuario/contabilidad_flask && /home/usuario/contabilidad_flask/venv/bin/python3 -m flask process-recurring >> /var/log/contabilidad/cron.log 2>&1
+    0 3 * * * /home/usuario/contabilidad_flask/ejecutar-recurrentes.sh
     ```
     *Este comando se ejecutará todos los días a las 3:00 AM.*
 
